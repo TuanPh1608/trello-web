@@ -34,7 +34,7 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
 
-      //React 
+      //React
       'react-refresh/only-export-components': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
@@ -57,7 +57,7 @@ export default [
       'no-multiple-empty-lines': 1,
       'space-before-blocks': ['error', 'always'],
       'object-curly-spacing': [1, 'always'],
-      'indent': ['warn', 2],
+      'indent': 'off',
       'semi': [1, 'never'],
       'quotes': ['error', 'single'],
       'array-bracket-spacing': 1,
