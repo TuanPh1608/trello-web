@@ -1,6 +1,5 @@
-
 import { createTheme } from '@mui/material/styles'
-import { red } from '@mui/material/colors'
+import { red, blue, grey } from '@mui/material/colors'
 
 // Create a theme instance.
 const theme = createTheme({
@@ -8,46 +7,54 @@ const theme = createTheme({
         colorSchemeSelector: '.mode-%s',
     },
     trelloCustom: {
-        appBarHeight: '52px',
+        appBarHeight: '60px',
         boardBarHeight: '60px',
-
     },
     colorSchemes: {
         dark: {
             palette: {
                 primary: {
-                    main: '#90caf9',
+                    main: blue[700],
                 },
                 secondary: {
-                    main: '#f48fb1',
+                    main: grey[500],
                 },
-                error: red,
+                error: {
+                    main: red[700],
+                },
                 background: {
-                    default: '#303030',
-                    paper: '#424242',
+                    default: '#121212',
+                    paper: '#1d1d1d',
                 },
                 text: {
-                    primary: 'rgba(255, 255, 255, 0.87)',
-                    secondary: 'rgba(255, 255, 255, 0.7)',
-                    disabled: 'rgba(255, 255, 255, 0.5)',
-                }
+                    primary: '#ffffff',
+                    secondary: grey[400],
+                    disabled: grey[600],
+                },
             },
         },
         light: {
             palette: {
                 primary: {
-                    main: '#1976d2',
+                    main: blue[500],
                 },
                 secondary: {
-                    main: '#dc004e',
+                    main: grey[700],
                 },
-                error: red,
+                error: {
+                    main: red[500],
+                },
                 background: {
-                    default: '#fafafa',
-                    paper: '#fff',
+                    default: '#ffffff',
+                    paper: '#f5f5f5',
+                },
+                text: {
+                    primary: '#000000',
+                    secondary: grey[800],
+                    disabled: grey[400],
                 },
             },
-        }
+        },
     },
 })
 
