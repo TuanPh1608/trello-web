@@ -34,11 +34,20 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
 
+      //React 
       'react-refresh/only-export-components': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'react/prop-types': 0,
       'react/display-name': 0,
+
+      //MUI
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: ['@mui/*/*/*']
+        }
+      ],
 
       'no-console': 1,
       'no-lonely-if': 1,
