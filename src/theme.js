@@ -7,6 +7,11 @@ const theme = createTheme({
     cssVariables: {
         colorSchemeSelector: '.mode-%s',
     },
+    trelloCustom: {
+        appBarHeight: '52px',
+        boardBarHeight: '60px',
+
+    },
     colorSchemes: {
         dark: {
             palette: {
