@@ -1,17 +1,15 @@
 import Box from '@mui/material/Box'
-import ModeSelect from '../ModeSelect'
-
 function AppBar() {
     return (
         <Box sx={{
-            backgroundColor: "primary.light",
+            backgroundColor: 'primary.main',
             width: '100%',
             height: (theme) => theme.trelloCustom.appBarHeight,
             display: 'flex',
-            justifyContent: 'end',
+            justifyContent: 'center',
             alignItems: 'center'
         }}>
-            <ModeSelect />
+            Trello
         </Box>
     )
 }
