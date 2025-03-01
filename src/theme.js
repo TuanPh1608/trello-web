@@ -12,47 +12,62 @@ const theme = createTheme({
     },
     colorSchemes: {
         dark: {
-            palette: {
-                primary: {
-                    main: blue[700],
-                },
-                secondary: {
-                    main: grey[500],
-                },
-                error: {
-                    main: red[700],
-                },
-                background: {
-                    default: '#121212',
-                    paper: '#1d1d1d',
-                },
-                text: {
-                    primary: '#ffffff',
-                    secondary: grey[400],
-                    disabled: grey[600],
+
+        },
+        light: {
+
+        },
+    },
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    '*::-webkit-scrollbar': {
+                        width: '12px',
+                        height: '12px',
+                    },
+                    '*::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#bdc3c7',
+                        borderRadius: '10px',
+                    },
+                    '*::-webkit-scrollbar-thumb:hover': {
+                        backgroundColor: '#3498db',
+                    },
+
                 },
             },
         },
-        light: {
-            palette: {
-                primary: {
-                    main: blue[500],
+
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'none',
                 },
-                secondary: {
-                    main: grey[700],
-                },
-                error: {
-                    main: red[500],
-                },
-                background: {
-                    default: '#ffffff',
-                    paper: '#f5f5f5',
-                },
-                text: {
-                    primary: '#000000',
-                    secondary: grey[800],
-                    disabled: grey[400],
-                },
+            },
+        },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    color: theme.palette.primary.main,
+                    fontSize: '0.9rem',
+
+                }),
+            }
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    color: theme.palette.primary.main,
+                    fontSize: '0.9rem',
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderColor: theme.palette.primary.light,
+                    },
+                    '&:hover': {
+                        '.MuiOutlinedInput-notchedOutline': {
+                            borderColor: theme.palette.primary.main,
+                        },
+                    },
+                }),
             },
         },
     },
