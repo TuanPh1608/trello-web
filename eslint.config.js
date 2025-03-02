@@ -14,19 +14,14 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
-    },
-    env: {
-      browser: true,
-      node: true,
-      es2020: true
+        sourceType: 'module'
+      }
     },
     settings: { react: { version: '18.3' } },
     plugins: {
       react,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'react-refresh': reactRefresh
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -34,14 +29,14 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
 
-      //React
+      // React
       'react-refresh/only-export-components': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'react/prop-types': 0,
       'react/display-name': 0,
 
-      //MUI
+      // MUI
       'no-restricted-imports': [
         'error',
         {
@@ -67,6 +62,6 @@ export default [
       'comma-dangle': 1,
       'comma-spacing': 1,
       'arrow-spacing': 1
-    },
-  },
+    }
+  }
 ]

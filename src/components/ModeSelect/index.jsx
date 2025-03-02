@@ -23,13 +23,39 @@ function ModeSelect() {
 
     return (
         <FormControl size='small' sx={{ minWidth: '120px' }}>
-            <InputLabel id="label-select-mode">Mode</InputLabel>
+            <InputLabel
+                sx={{
+                    color: 'white',
+                    '&.Mui-focused': {
+                        color: 'white'
+                    }
+
+                }}
+                id="label-select-mode">Mode
+            </InputLabel>
             <Select
+                sx={{
+                    color: 'white',
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white'
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white'
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white'
+                    },
+                    '& .MuiSelect-icon': {
+                        color: 'white'
+                    }
+
+                }}
                 labelId="label-select-mode"
                 id="select-mode"
                 value={mode}
                 label="Mode"
                 onChange={handleChange}
+
                 displayEmpty
                 inputProps={{ 'aria-label': 'Without label' }}
             >
