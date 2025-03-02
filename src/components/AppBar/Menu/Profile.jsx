@@ -1,6 +1,5 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -9,20 +8,20 @@ import Avatar from '@mui/material/Avatar'
 import Logout from '@mui/icons-material/Logout'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from '@mui/icons-material/Person'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AccountBoxIcon from '@mui/icons-material/AccountBox'
 
 function Profile() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
+    const [anchorEl, setAnchorEl] = React.useState(null)
+    const open = Boolean(anchorEl)
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+        setAnchorEl(event.currentTarget)
+    }
     const handleClose = () => {
-        setAnchorEl(null);
-    };
+        setAnchorEl(null)
+    }
 
     return (
         <Box>
@@ -47,7 +46,7 @@ function Profile() {
                 open={open}
                 onClose={handleClose}
                 MenuListProps={{
-                    'aria-labelledby': 'basic-button-profile',
+                    'aria-labelledby': 'basic-button-profile'
                 }}
             >
                 <MenuItem onClick={handleClose}>
@@ -77,7 +76,7 @@ function Profile() {
                 </MenuItem>
             </Menu>
         </Box>
-    );
+    )
 }
 
-export default Profile;
+export default Profile
