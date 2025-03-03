@@ -98,7 +98,7 @@ function BoardBar() {
                 <AvatarGroup
                     max={4}
                     sx={{
-                        gap: '8px',
+                        gap: '-16px',
                         '& .MuiAvatar-root': {
                             width: 32,
                             height: 32,
