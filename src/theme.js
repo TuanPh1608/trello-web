@@ -54,7 +54,18 @@ const theme = createTheme({
         },
         MuiInputLabel: {
             styleOverrides: {
-                root: { fontSize: '0.9rem' }
+                root: {
+                    '&.MuiTypography-body1': {
+                        fontSize: '0.9rem'
+                    }
+                }
+            }
+        },
+        MuiTypography: {
+            styleOverrides: {
+                root: {
+                    fontSize: '0.9rem'
+                }
             }
         },
         MuiOutlinedInput: {
