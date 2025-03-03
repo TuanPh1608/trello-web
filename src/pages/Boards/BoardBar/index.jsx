@@ -11,6 +11,8 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
+import { capitalizeFirstLetter } from '~/utils/formatters'
+
 
 const CHIP_STYLES = {
     bgcolor: 'transparent',
@@ -25,7 +27,7 @@ const CHIP_STYLES = {
     }
 }
 
-function BoardBar() {
+function BoardBar({ board }) {
     return (
         <Box sx={{
             width: '100%',
@@ -46,13 +48,13 @@ function BoardBar() {
                 <Chip
                     sx={CHIP_STYLES}
                     icon={<DashboardIcon />}
-                    label="Dashboard"
+                    label= {board?.title}
                     clickable
                 />
                 <Chip
                     sx={CHIP_STYLES}
                     icon={<VpnLockIcon />}
-                    label="Public/Private Workspace"
+                    label= {capitalizeFirstLetter(board?.type)}
                     clickable
                 />
                 <Chip

@@ -18,8 +18,9 @@ import ContentCopy from '@mui/icons-material/ContentCopy'
 import ContentPaste from '@mui/icons-material/ContentPaste'
 
 import ListCards from './ListCards'
+import { mapOrder } from '~/utils/sorts'
 
-function Column() {
+function Column({ column }) {
     const [anchorEl, setAnchorEl] = React.useState(null)
     const open = Boolean(anchorEl)
     const handleClick = (event) => {
@@ -28,6 +29,8 @@ function Column() {
     const handleClose = () => {
         setAnchorEl(null)
     }
+
+    const sortedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
     return (
         <Box sx={{
             minWidth: '300px',
@@ -51,7 +54,9 @@ function Column() {
                     fontSize: '1.2rem',
                     fontWeight: 'bold',
                     cursor: 'pointer'
-                }}>Column Title</Typography>
+                }}>
+                    {column?.title}
+                </Typography>
                 <Box>
                     <Tooltip title="More options">
                         <ExpandMoreIcon sx={{ color: 'text.primary', cursor: 'pointer' }}
@@ -116,7 +121,7 @@ function Column() {
                 </Box>
             </Box>
             {/* List card */}
-            <ListCards />
+            <ListCards cards={sortedCards} />
 
             {/* Column footer */}
             <Box sx={{

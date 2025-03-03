@@ -8,42 +8,15 @@ import LinkIcon from '@mui/icons-material/Link'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 
-function Card({ temporaryHideMedia }) {
-    if (temporaryHideMedia) {
-        return (
-            <MuiCard sx={{
-                cursor: 'pointer',
-                boxShadow: '0 1px 1px rgba(0,0,0,0.1)',
-                overflow: 'unset'
-            }}>
-                <CardContent sx={{
-                    p: 1.5,
-                    '&:last-child': {
-                        pb: 1.5
-                    }
-
-                }} >
-                    <Typography>ReactJS</Typography>
-                </CardContent>
-                <CardActions sx={{ p: '0 4px 8px 4px' }}>
-                    <Button size="small" startIcon={<PeopleIcon />}>20</Button>
-                    <Button size="small" startIcon={<ModeCommentIcon />}>15</Button>
-                    <Button size="small" startIcon={<LinkIcon />}>5</Button>
-                </CardActions>
-            </MuiCard>
-        )
-    }
+function Card({ card }) {
+    const shouldShowCardActions = !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length
     return (
         <MuiCard sx={{
             cursor: 'pointer',
             boxShadow: '0 1px 1px rgba(0,0,0,0.1)',
             overflow: 'unset'
         }}>
-            <CardMedia
-                sx={{ height: 140 }}
-                image="https://letdiv.com/wp-content/uploads/2024/04/khoa-hoc-react.png"
-                title="green iguana"
-            />
+            {card?.cover && <CardMedia sx={{ height: 140 }} image={card?.cover} />}
             <CardContent sx={{
                 p: 1.5,
                 '&:last-child': {
@@ -51,13 +24,21 @@ function Card({ temporaryHideMedia }) {
                 }
 
             }} >
-                <Typography>ReactJS</Typography>
+                <Typography>{card?.title}</Typography>
             </CardContent>
-            <CardActions sx={{ p: '0 4px 8px 4px' }}>
-                <Button size="small" startIcon={<PeopleIcon />}>20</Button>
-                <Button size="small" startIcon={<ModeCommentIcon />}>15</Button>
-                <Button size="small" startIcon={<LinkIcon />}>5</Button>
-            </CardActions>
+            {shouldShowCardActions &&
+                <CardActions sx={{ p: '0 4px 8px 4px' }}>
+                    {!!card?.memberIds?.length &&
+                        <Button size="small" startIcon={<PeopleIcon />}>{card?.memberIds?.length}</Button>
+                    }
+                    {!!card?.comments?.length &&
+                        <Button size="small" startIcon={<ModeCommentIcon />}>{card?.comments?.length}</Button>
+                    }
+                    {!!card?.attachments?.length &&
+                        <Button size="small" startIcon={<LinkIcon />}>{card?.attachments?.length}</Button>
+                    }
+                </CardActions>
+            }
         </MuiCard>
 
     )
