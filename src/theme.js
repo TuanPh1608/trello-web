@@ -3,6 +3,9 @@ import { createTheme } from '@mui/material/styles'
 const APP_BAR_HEIGHT = '60px'
 const BOARD_BAR_HEIGHT = '60px'
 const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`
+const COL_HEADER_HEIGHT = '40px'
+const COL_FOOTER_HEIGHT = '40px'
+
 // Create a theme instance.
 const theme = createTheme({
     cssVariables: {
@@ -11,7 +14,9 @@ const theme = createTheme({
     trelloCustom: {
         appBarHeight: APP_BAR_HEIGHT,
         boardBarHeight: BOARD_BAR_HEIGHT,
-        boardContentHeight: BOARD_CONTENT_HEIGHT
+        boardContentHeight: BOARD_CONTENT_HEIGHT,
+        colHeaderHeight: COL_HEADER_HEIGHT,
+        colFooterHeight: COL_FOOTER_HEIGHT
     },
     colorSchemes: {
         dark: {
