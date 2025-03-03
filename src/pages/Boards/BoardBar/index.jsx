@@ -36,7 +36,6 @@ function BoardBar() {
             gap: 2,
             paddingX: 2,
             overflowX: 'auto',
-            borderBottom: '1px solid white',
             bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2')
         }}>
             <Box sx={{
@@ -98,7 +97,7 @@ function BoardBar() {
                 <AvatarGroup
                     max={4}
                     sx={{
-                        gap: '8px',
+                        gap: '-16px',
                         '& .MuiAvatar-root': {
                             width: 32,
                             height: 32,

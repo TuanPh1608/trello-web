@@ -1,13 +1,22 @@
 import { createTheme } from '@mui/material/styles'
 
+const APP_BAR_HEIGHT = '60px'
+const BOARD_BAR_HEIGHT = '60px'
+const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`
+const COL_HEADER_HEIGHT = '40px'
+const COL_FOOTER_HEIGHT = '40px'
+
 // Create a theme instance.
 const theme = createTheme({
     cssVariables: {
         colorSchemeSelector: '.mode-%s'
     },
     trelloCustom: {
-        appBarHeight: '60px',
-        boardBarHeight: '60px'
+        appBarHeight: APP_BAR_HEIGHT,
+        boardBarHeight: BOARD_BAR_HEIGHT,
+        boardContentHeight: BOARD_CONTENT_HEIGHT,
+        colHeaderHeight: COL_HEADER_HEIGHT,
+        colFooterHeight: COL_FOOTER_HEIGHT
     },
     colorSchemes: {
         dark: {
@@ -50,7 +59,18 @@ const theme = createTheme({
         },
         MuiInputLabel: {
             styleOverrides: {
-                root: { fontSize: '0.9rem' }
+                root: {
+                    '&.MuiTypography-body1': {
+                        fontSize: '0.9rem'
+                    }
+                }
+            }
+        },
+        MuiTypography: {
+            styleOverrides: {
+                root: {
+                    fontSize: '0.9rem'
+                }
             }
         },
         MuiOutlinedInput: {
