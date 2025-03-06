@@ -20,7 +20,24 @@ import ContentPaste from '@mui/icons-material/ContentPaste'
 import ListCards from './ListCards'
 import { mapOrder } from '~/utils/sorts'
 
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
 function Column({ column }) {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: column._id,
+        data: { ...column }
+    })
+    /* Lỗi khi kéo thả cột bị stretch kì =>
+     https://github.com/clauderic/dnd-kit/issues/117
+    */
+
+    const dndKitColumnStyles = {
+        // touchAction: 'none',
+        transform: CSS.Translate.toString(transform),
+        transition
+    }
+
     const [anchorEl, setAnchorEl] = React.useState(null)
     const open = Boolean(anchorEl)
     const handleClick = (event) => {
@@ -32,17 +49,22 @@ function Column({ column }) {
 
     const sortedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
     return (
-        <Box sx={{
-            minWidth: '300px',
-            maxWidth: '300px',
-            bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#dfe4ea'),
-            ml: 2,
-            borderRadius: '8px',
-            display: 'flex',
-            flexDirection: 'column',
-            height: 'fit-content',
-            maxHeight: (theme) => `calc(${theme.trelloCustom.boardContentHeight} - ${theme.spacing(4)})`
-        }}>
+        <Box
+            ref={setNodeRef}
+            style={dndKitColumnStyles}
+            {...attributes}
+            {...listeners}
+            sx={{
+                minWidth: '300px',
+                maxWidth: '300px',
+                bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#dfe4ea'),
+                ml: 2,
+                borderRadius: '8px',
+                display: 'flex',
+                flexDirection: 'column',
+                height: 'fit-content',
+                maxHeight: (theme) => `calc(${theme.trelloCustom.boardContentHeight} - ${theme.spacing(4)})`
+            }}>
             <Box sx={{
                 height: (theme) => theme.trelloCustom.colHeaderHeight,
                 p: 2,
