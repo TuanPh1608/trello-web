@@ -16,7 +16,8 @@ import {
     useSensor,
     useSensors,
     DragOverlay,
-    defaultDropAnimationSideEffects
+    defaultDropAnimationSideEffects,
+    closestCorners
 
 } from '@dnd-kit/core'
 
@@ -51,6 +52,7 @@ function BoardContent({ board }) {
     const [activeDragItemId, setActiveDragItemId] = useState(null)
     const [activeDragItemType, setActiveDragItemType] = useState(null)
     const [activeDragItemData, setActiveDragItemData] = useState(null)
+    const [oldColumnDraggingCard, setOldColumnDraggingCard] = useState(null)
 
     useEffect(() => {
         setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
@@ -59,18 +61,68 @@ function BoardContent({ board }) {
     const findColumnByCardId = (cardId) => {
         return orderedColumns.find(column => column?.cards?.map(card => card._id)?.includes(cardId))
     }
+    // Cập nhật lại state khi kéo thả thẻ giữa các cột
+    const moveCardBetweenColumns = (
+        overColumn,
+        overCardId,
+        activeColumn,
+        activeDraggingCardId,
+        activeDraggingCardData,
+        active,
+        over
+    ) => {
+        setOrderedColumns(preColumns => {
+            const overCardIndex = overColumn?.cards?.findIndex(card => card._id === overCardId)
+            let newCardIndex
+            const isBelowOverItem = active.rect.current.translated &&
+                active.rect.current.translated.top > over.rect.top + over.rect.height
+            const modifier = isBelowOverItem ? 1 : 0
+            newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
+
+            const nextColumns = cloneDeep(preColumns)
+            const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
+            const nextOverColumn = nextColumns.find(column => column._id === overColumn._id)
+
+            if (nextActiveColumn) {
+                // Xóa card đang kéo khỏi cột hiện tại
+                nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
+                // Cập nhật lại cardOrderIds
+                nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
+            }
+            if (nextOverColumn) {
+                // Kiểm tra xem card đang kéo đã có trong cột đang kéo vào chưa
+                nextOverColumn.cards = nextOverColumn.cards.filter(card => card._id !== activeDraggingCardId)
+                // Cập nhật lại chuẩn dữ liệu khi kéo giữa các cột
+                const rebuild_activeDraggingCardData = {
+                    ...activeDraggingCardData,
+                    columnId: overColumn._id
+                }
+                // Thêm card vào cột đang kéo vào
+                nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
+                // Cập nhật lại cardOrderIds
+                nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
+            }
+
+            return nextColumns
+        })
+    }
+
     const handleDragStart = (event) => {
         // console.log('Drag start:', event)
         setActiveDragItemId(event?.active?.id)
         setActiveDragItemType(event?.active?.data?.current?.columnId ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
         setActiveDragItemData(event?.active?.data?.current)
+        // Nếu kéo thẻ thì lưu lại cột cũ chứa thẻ đang kéo
+        if (event?.active?.data?.current?.columnId) {
+            setOldColumnDraggingCard(findColumnByCardId(event?.active?.id))
+        }
     }
     const handleDragOver = (event) => {
 
         // Không làm gì nếu kéo thẻ cột
         if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) { return }
 
-        console.log('Drag over:', event)
+        // console.log('Drag over:', event)
 
         const { active, over } = event
         // Nếu không tồn tại active hoặc over thì không làm gì cả
@@ -83,63 +135,64 @@ function BoardContent({ board }) {
         const overColumn = findColumnByCardId(overCardId)
         if (!activeColumn || !overColumn) return
         if (activeColumn._id !== overColumn._id) {
-            setOrderedColumns(preColumns => {
-                const overCardIndex = overColumn?.cards?.findIndex(card => card._id === overCardId)
-                let newCardIndex
-                const isBelowOverItem = active.rect.current.translated &&
-                    active.rect.current.translated.top > over.rect.top + over.rect.height
-                const modifier = isBelowOverItem ? 1 : 0
-                newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
-
-                const nextColumns = cloneDeep(preColumns)
-                const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
-                const nextOverColumn = nextColumns.find(column => column._id === overColumn._id)
-
-                if (nextActiveColumn) {
-                    // Xóa card đang kéo khỏi cột hiện tại
-                    nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
-                    // Cập nhật lại cardOrderIds
-                    nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
-                }
-                if (nextOverColumn) {
-                    // Kiểm tra xem card đang kéo đã có trong cột đang kéo vào chưa
-                    nextOverColumn.cards = nextOverColumn.cards.filter(card => card._id !== activeDraggingCardId)
-                    // Thêm card vào cột đang kéo vào
-                    nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, activeDraggingCardData)
-                    // Cập nhật lại cardOrderIds
-                    nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
-                }
-
-                return nextColumns
-
-
-            })
+            moveCardBetweenColumns(overColumn, overCardId, activeColumn, activeDraggingCardId, activeDraggingCardData, active, over)
         }
     }
     const handleDragEnd = (event) => {
         // console.log('Drag end:', event)
-        if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
 
-            return
-        }
         const { active, over } = event
         // Nếu không tồn tại active hoặc over thì không làm gì cả
         if (!active || !over) return
+        // Xử lý khi kéo thả card
+        if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+            const { id: activeDraggingCardId, data: { current: activeDraggingCardData } } = active
+            const { id: overCardId } = over
+            // Tìm column chứa thẻ đang kéo và thẻ được kéo vào
+            const activeColumn = findColumnByCardId(activeDraggingCardId)
+            const overColumn = findColumnByCardId(overCardId)
+            if (!activeColumn || !overColumn) return
 
+            //  Nếu kéo thẻ vào cột khác 
+            if (oldColumnDraggingCard._id != overColumn._id) {
+                moveCardBetweenColumns(overColumn, overCardId, activeColumn, activeDraggingCardId, activeDraggingCardData, active, over)
+            }
+            //  Nếu kéo thẻ vào cùng cột
+            else {
+                const oldCardIndex = oldColumnDraggingCard?.cards?.findIndex(c => c._id === activeDragItemId)
+                const newCardIndex = overColumn?.cards?.findIndex(c => c._id === overCardId)
 
-        // Cho việc kéo vào thả cột
-        if (active.id !== over.id) {
-            const oldIndex = orderedColumns.findIndex(c => c._id === active.id)
-            const newIndex = orderedColumns.findIndex(c => c._id === over.id)
-            const dndOrderedColumns = arrayMove(orderedColumns, oldIndex, newIndex)
-            // Update columnOrderIds
-            // const dndOrderedColumnIds = dndOrderedColumns.map(c => c._id)
+                // Dùng arrayMove cùng logic với kéo thả cột
+                const dndOrderedCards = arrayMove(oldColumnDraggingCard?.cards, oldCardIndex, newCardIndex)
 
-            setOrderedColumns(dndOrderedColumns)
+                setOrderedColumns(preColumns => {
+                    const nextColumns = cloneDeep(preColumns)
+                    const targetColumn = nextColumns.find(column => column._id === overColumn._id)
+
+                    targetColumn.cards = dndOrderedCards
+                    targetColumn.cardOrderIds = dndOrderedCards.map(card => card._id)
+
+                    return nextColumns
+                })
+            }
+        }
+        // Xử lý khi kéo thả cột
+        if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+            // Cho việc kéo vào thả cột
+            if (active.id !== over.id) {
+                const oldColumnIndex = orderedColumns.findIndex(c => c._id === active.id)
+                const newColumnIndex = orderedColumns.findIndex(c => c._id === over.id)
+                const dndOrderedColumns = arrayMove(orderedColumns, oldColumnIndex, newColumnIndex)
+                // Update columnOrderIds
+                // const dndOrderedColumnIds = dndOrderedColumns.map(c => c._id)
+
+                setOrderedColumns(dndOrderedColumns)
+            }
         }
         setActiveDragItemId(null)
         setActiveDragItemType(null)
         setActiveDragItemData(null)
+        setOldColumnDraggingCard(null)
     }
     const dropAnimation = {
         sideEffects: defaultDropAnimationSideEffects({
@@ -150,6 +203,7 @@ function BoardContent({ board }) {
     return (
         <DndContext
             sensors={sensors}
+            collisionDetection={closestCorners}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd} >
