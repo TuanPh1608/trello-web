@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box'
 import ListColumns from './ListColumns'
 import { mapOrder } from '~/utils/sorts'
+import { createPlaceholderCard } from '~/utils/formatters'
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 
 import Column from './ListColumns/Column'
 import Card from './ListColumns/Column/ListCards/Card'
@@ -19,9 +20,9 @@ import {
     defaultDropAnimationSideEffects,
     closestCorners,
     pointerWithin,
-    rectIntersection,
-    getFirstCollision,
-    closestCenter
+    // rectIntersection,
+    getFirstCollision
+    // closestCenter
 
 } from '@dnd-kit/core'
 
@@ -93,6 +94,10 @@ function BoardContent({ board }) {
             if (nextActiveColumn) {
                 // Xóa card đang kéo khỏi cột hiện tại
                 nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
+                // Thêm card placeholder vào cột hiện tại nếu cột hiện tại không có card nào
+                if (isEmpty(nextActiveColumn.cards)) {
+                    nextActiveColumn.cards = [createPlaceholderCard(nextActiveColumn)]
+                }
                 // Cập nhật lại cardOrderIds
                 nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
             }
@@ -106,6 +111,8 @@ function BoardContent({ board }) {
                 }
                 // Thêm card vào cột đang kéo vào
                 nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
+                // Xử lý xóa card placeholder nếu có
+                nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
                 // Cập nhật lại cardOrderIds
                 nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
             }
@@ -213,17 +220,20 @@ function BoardContent({ board }) {
         }
         // Kiểm tra xem pointer có nằm trong vùng của các container không
         const pointerIntersections = pointerWithin(args)
-        // Kiểm tra  xem có sự va chạm với pointer không
-        const intersections = !!pointerIntersections?.length
-            ? pointerIntersections
-            : rectIntersection(args)
+        // Nếu kéo ra khỏi vùng board thì không làm gì cả
+        if (!pointerIntersections?.length) return
 
-        let overId = getFirstCollision(intersections, 'id')
+        // // Kiểm tra  xem có sự va chạm với pointer không
+        // const intersections = !!pointerIntersections?.length
+        //     ? pointerIntersections
+        //     : rectIntersection(args)
+
+        let overId = getFirstCollision(pointerIntersections, 'id')
         // Nếu có va chạm
         if (overId) {
             const checkColumn = orderedColumns.find(column => column._id === overId)
             if (checkColumn) {
-                overId = closestCenter({
+                overId = closestCorners({
                     ...args,
                     droppableContainers: args.droppableContainers.filter(container => {
                         return (container.id !== overId) && (checkColumn?.cardOrderIds?.includes(container.id))
