@@ -142,25 +142,25 @@ yarn dev
 
 Điều này sẽ khởi động server phát triển Vite và bạn có thể xem ứng dụng trong trình duyệt tại `http://localhost:5173`.
 
-### Xây dựng cho sản xuất
+### Build dự án
 
-Để xây dựng dự án cho sản xuất, chạy lệnh:
+Để build dự án, chạy lệnh:
 
 ```bash
 yarn build
 ```
 
-Các file sẵn sàng cho sản xuất sẽ được tạo trong thư mục `dist`.
+Các file build sẽ được tạo trong thư mục `dist`.
 
-### Xem trước bản build sản xuất
+### Xem trước bản build
 
-Để xem trước bản build sản xuất, chạy lệnh:
+Để preview bản build, chạy lệnh:
 
 ```bash
 yarn preview
 ```
 
-Điều này sẽ khởi động một server cục bộ để phục vụ bản build sản xuất tại `http://localhost:4173`.
+Điều này sẽ khởi động một server cục bộ để phục vụ bản build tại `http://localhost:4173`.
 
 ### Kiểm tra mã nguồn
 
