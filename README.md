@@ -117,7 +117,7 @@ Làm theo các bước sau để thiết lập và chạy dự án:
 1. Clone repository:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/TuanPh1608/trello-web.git
     ```
 
 2. Điều hướng đến thư mục dự án:
