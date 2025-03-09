@@ -160,7 +160,7 @@ function BoardContent({ board }) {
             const overColumn = findColumnByCardId(overCardId)
             if (!activeColumn || !overColumn) return
 
-            //  Nếu kéo thẻ vào cột khác 
+            //  Nếu kéo thẻ vào cột khác
             if (oldColumnDraggingCard._id != overColumn._id) {
                 moveCardBetweenColumns(overColumn, overCardId, activeColumn, activeDraggingCardId, activeDraggingCardData, active, over)
             }
@@ -207,18 +207,18 @@ function BoardContent({ board }) {
         })
     }
 
-    const collisionDetectionStrategy = useCallback((args) => {
+    const customCollisionDetectionStrategy = useCallback((args) => {
         if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
             return closestCorners({ ...args })
         }
-        // First, let's see if there are any Intersections with the pointer
+        // Kiểm tra xem pointer có nằm trong vùng của các container không
         const pointerIntersections = pointerWithin(args)
         // Kiểm tra  xem có sự va chạm với pointer không
-        const intersection = !!pointerIntersections?.length
+        const intersections = !!pointerIntersections?.length
             ? pointerIntersections
             : rectIntersection(args)
 
-        let overId = getFirstCollision(intersection)
+        let overId = getFirstCollision(intersections, 'id')
         // Nếu có va chạm
         if (overId) {
             const checkColumn = orderedColumns.find(column => column._id === overId)
@@ -243,7 +243,7 @@ function BoardContent({ board }) {
             // collisionDetection={closestCorners}
 
             // Custom nâng cao collisionDetection
-            collisionDetection={collisionDetectionStrategy}
+            collisionDetection={customCollisionDetectionStrategy}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd} >
