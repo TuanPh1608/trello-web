@@ -87,19 +87,57 @@ yarn add @mui/material @emotion/react @emotion/styled
 
 ### Xử lý xác thực người dùng
 
-Hiện nay, có các phương pháp phổ biến để xác thực người dùng trong các dự án React như:
+Hiện nay, có ba phương pháp phổ biến nhất để xác thực người dùng trong các dự án React:
 
-- **JWT (JSON Web Token)**: Phương pháp này sử dụng token để xác thực người dùng. Sau khi người dùng đăng nhập, server sẽ trả về một token, và token này sẽ được lưu trữ trong localStorage hoặc cookies, được gửi kèm với các yêu cầu HTTP cần bảo mật.
-- **Firebase Authentication**: Đây là một dịch vụ cung cấp phương thức xác thực người dùng qua các phương thức như email/password, Google, Facebook, v.v. Firebase rất dễ tích hợp và hỗ trợ xác thực nhanh chóng.
+#### - JWT (JSON Web Token)
+JWT là một phương pháp xác thực sử dụng **token** để bảo mật dữ liệu giữa client và server. Sau khi người dùng đăng nhập, server sẽ trả về một token, và token này có thể được lưu trong **localStorage, sessionStorage hoặc cookies**. Các yêu cầu HTTP sau đó sẽ gửi kèm token này để xác thực.
 
+**Tài liệu chính thức**: [https://jwt.io/introduction/](https://jwt.io/introduction/)
+
+#### - Firebase Authentication
+Firebase Authentication là một dịch vụ của Google cung cấp các phương thức xác thực phổ biến như **email/password, Google, Facebook, Apple ID, v.v.**. Firebase giúp xác thực nhanh chóng mà không cần backend riêng.
+
+**Tài liệu chính thức**: [https://firebase.google.com/docs/auth](https://firebase.google.com/docs/auth)
+
+#### - OAuth 2.0 (Google, Facebook, GitHub)
+OAuth 2.0 là một giao thức xác thực được sử dụng rộng rãi bởi các dịch vụ như **Google, Facebook, GitHub**. Thay vì lưu mật khẩu, ứng dụng sẽ yêu cầu quyền từ các nền tảng này để xác thực người dùng.
+
+**Tài liệu chính thức**: [https://oauth.net/2/](https://oauth.net/2/)
+
+#### Nên chọn phương pháp nào?
+| Phương pháp               | Khi nào nên dùng? |
+|--------------------------|------------------|
+| **JWT**                  | Khi muốn xác thực nhanh, độc lập với các bên thứ ba. |
+| **Firebase Authentication** | Khi muốn sử dụng dịch vụ xác thực có sẵn, dễ tích hợp. |
+| **OAuth 2.0**            | Khi muốn xác thực qua các nền tảng lớn như Google, Facebook. |
+
+Tùy vào nhu cầu của dự án, bạn có thể chọn phương pháp phù hợp nhất. 🚀
 
 ### Tương tác với Backend
 
-Hiện nay, có các phương pháp phổ biến để tương tác với backend trong React như:
+Hiện nay, có ba phương pháp phổ biến nhất để tương tác với backend trong React:
 
-- **Axios**: Thư viện phổ biến giúp gửi yêu cầu HTTP và nhận phản hồi từ server. Axios hỗ trợ các tính năng như interceptors và dễ dàng cấu hình.
-- **Fetch API**: Phương thức native trong JavaScript để gửi yêu cầu HTTP. Fetch API dễ sử dụng và không cần cài thêm thư viện bên ngoài.
+#### - Axios
+Axios là một thư viện mạnh mẽ giúp gửi HTTP requests với nhiều tính năng như **interceptors, automatic JSON parsing, timeout, cancel request**. Nó thường được sử dụng thay thế cho Fetch API vì dễ sử dụng và có nhiều tính năng hơn.
 
+**Tài liệu chính thức**: [https://axios-http.com/](https://axios-http.com/)
+
+#### - React Query (TanStack Query)
+React Query giúp quản lý dữ liệu từ backend một cách tối ưu, hỗ trợ **caching tự động, background refetching, pagination, infinite scrolling**. Đây là lựa chọn hàng đầu cho các ứng dụng có dữ liệu động.
+
+**Tài liệu chính thức**: [https://tanstack.com/query/latest](https://tanstack.com/query/latest)
+
+#### - SWR (Stale-While-Revalidate)
+SWR được phát triển bởi **Vercel**, giúp fetching dữ liệu nhanh và hiệu quả. Nó hỗ trợ **caching thông minh, revalidation tự động, và background refetching** khi tab active trở lại.
+
+**Tài liệu chính thức**: [https://swr.vercel.app/](https://swr.vercel.app/)
+
+#### So sánh giữa các phương pháp
+| Phương pháp      | Khi nào nên dùng? |
+|-----------------|------------------|
+| **Axios**       | Khi cần gửi HTTP requests với nhiều tính năng nâng cao. |
+| **React Query** | Khi cần caching, re-fetching, và quản lý dữ liệu phức tạp. |
+| **SWR**         | Khi cần fetching dữ liệu nhanh, nhẹ, tối ưu performance. |
 
 ## Cài đặt
 
