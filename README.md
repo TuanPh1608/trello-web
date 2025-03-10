@@ -104,7 +104,7 @@ OAuth 2.0 là một giao thức xác thực được sử dụng rộng rãi b�
 
 **Tài liệu chính thức**: [https://oauth.net/2/](https://oauth.net/2/)
 
-#### Nên chọn phương pháp nào?
+#### So sánh
 | Phương pháp               | Khi nào nên dùng? |
 |--------------------------|------------------|
 | **JWT**                  | Khi muốn xác thực nhanh, độc lập với các bên thứ ba. |
@@ -132,7 +132,7 @@ SWR được phát triển bởi **Vercel**, giúp fetching dữ liệu nhanh v�
 
 **Tài liệu chính thức**: [https://swr.vercel.app/](https://swr.vercel.app/)
 
-#### So sánh giữa các phương pháp
+#### So sánh 
 | Phương pháp      | Khi nào nên dùng? |
 |-----------------|------------------|
 | **Axios**       | Khi cần gửi HTTP requests với nhiều tính năng nâng cao. |
